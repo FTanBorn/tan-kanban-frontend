@@ -1,4 +1,3 @@
-// src/components/modals/create-column-modal.tsx
 "use client";
 
 import { useState } from "react";
@@ -8,6 +7,7 @@ import * as z from "zod";
 import { Loader2 } from "lucide-react";
 import { useBoardStore } from "@/store/board-store";
 import { useToast } from "@/hooks/use-toast";
+import { ColumnType } from "@/lib/types/column";
 
 import {
   Dialog,
@@ -25,6 +25,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -33,6 +40,9 @@ const columnSchema = z.object({
     .string()
     .min(1, "Column name is required")
     .max(50, "Name is too long"),
+  type: z.enum(["todo", "in-progress", "done", "custom"] as const),
+  color: z.string().optional(),
+  limit: z.number().min(0).max(100).optional(),
 });
 
 type ColumnFormValues = z.infer<typeof columnSchema>;
@@ -55,6 +65,7 @@ export function CreateColumnModal({
     resolver: zodResolver(columnSchema),
     defaultValues: {
       name: "",
+      type: "custom",
     },
   });
 
@@ -65,6 +76,9 @@ export function CreateColumnModal({
       const columnData = {
         name: values.name,
         boardId: boardId,
+        type: values.type,
+        color: values.color,
+        limit: values.limit,
       };
 
       await addColumn(boardId, columnData);
@@ -111,6 +125,59 @@ export function CreateColumnModal({
                       placeholder="Enter column name"
                       disabled={isLoading}
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    disabled={isLoading}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select column type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="todo">To Do</SelectItem>
+                      <SelectItem value="in-progress">In Progress</SelectItem>
+                      <SelectItem value="done">Done</SelectItem>
+                      <SelectItem value="custom">Custom</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="limit"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Task Limit (Optional)</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min={0}
+                      max={100}
+                      placeholder="Enter task limit"
+                      disabled={isLoading}
+                      {...field}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        field.onChange(value ? parseInt(value, 10) : undefined);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
