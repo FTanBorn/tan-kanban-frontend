@@ -1,0 +1,18 @@
+/* src/styles/scrollbar.css */
+.ps__rail-x {
+  height: 6px !important;
+  opacity: 0.6;
+}
+
+.ps__rail-x:hover {
+  opacity: 0.9;
+}
+
+.ps__thumb-x {
+  height: 6px !important;
+  background-color: hsl(var(--muted-foreground)) !important;
+}
+
+.ps__rail-x:hover > .ps__thumb-x {
+  height: 6px !important;
+}
