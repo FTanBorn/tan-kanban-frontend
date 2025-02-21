@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const authOptions: NextAuthOptions = {
+const options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -78,5 +78,6 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
 };
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(options);
+
 export { handler as GET, handler as POST };
