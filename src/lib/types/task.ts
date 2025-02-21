@@ -14,13 +14,6 @@ export enum TaskStatus {
   BLOCKED = "blocked",
 }
 
-export interface Comment {
-  _id?: string;
-  content: string;
-  createdBy: string; // User ID
-  createdAt: Date;
-}
-
 export interface TaskAssignee {
   _id: string;
   name: string;
@@ -35,13 +28,13 @@ export interface TaskComment {
 }
 
 export interface Task {
-  _id: string; // Artık undefined olamaz
+  _id: string;
   title: string;
   description?: string;
   priority: TaskPriority;
   status?: TaskStatus;
   dueDate?: string;
-  assignees: TaskAssignee[]; // string[] yerine TaskAssignee[]
+  assignees: TaskAssignee[];
   labels: string[];
   comments: TaskComment[];
   order: number;
@@ -54,7 +47,7 @@ export interface CreateTaskInput {
   description?: string;
   priority?: TaskPriority;
   status?: TaskStatus;
-  dueDate?: Date;
+  dueDate?: string; // Changed from Date to string
   assignees?: string[];
   labels?: string[];
 }

@@ -169,7 +169,7 @@ export const useBoardStore = create<BoardState>((set, get) => ({
       throw new Error("Failed to delete board");
     } finally {
       set({ loading: false });
-    } 
+    }
   },
 
   addMember: async (boardId, email) => {
@@ -363,42 +363,33 @@ export const useBoardStore = create<BoardState>((set, get) => ({
   ) => {
     const currentState = get();
     const currentBoard = currentState.activeBoard;
-
     if (!currentBoard) return;
-
     try {
       set({ loading: true });
 
-      // API çağrısı
+      // API çağrısı - artık dönüşüme gerek yok çünkü tip zaten string
       const newTask = await taskService.createTask(boardId, columnId, data);
 
       // State güncelleme
       set((state: BoardState) => {
         const activeBoard = state.activeBoard;
         if (!activeBoard) return state;
-
         const updatedColumns = activeBoard.columns.map((column: Column) => {
           if (column._id === columnId) {
-            // Yeni task eklenmiş güncel kolon
-            const updatedColumn = {
+            return {
               ...column,
               tasks: [...column.tasks, newTask],
             };
-
-            return updatedColumn;
           }
           return column;
         });
-
-        const newState = {
+        return {
           ...state,
           activeBoard: {
             ...activeBoard,
             columns: updatedColumns,
           },
         };
-
-        return newState;
       });
     } catch (error) {
       console.error("Task oluşturma hatası:", error);
@@ -467,17 +458,17 @@ export const useBoardStore = create<BoardState>((set, get) => ({
     const currentBoard = currentState.boards.find(
       (b: Board) => b._id === boardId
     );
-
     if (!currentBoard) return;
-
     try {
       set({ loading: true });
 
+      // API çağrısı - artık dönüşüme gerek yok
+      await taskService.updateTask(boardId, taskId, data);
+
       // Optimistic update
-      set((state: BoardState) => {
+      set((state: any) => {
         const updatedBoards = state.boards.map((board: Board) => {
           if (board._id !== boardId) return board;
-
           const updatedColumns = board.columns.map((column: Column) => {
             return {
               ...column,
@@ -492,13 +483,11 @@ export const useBoardStore = create<BoardState>((set, get) => ({
               }),
             };
           });
-
           return {
             ...board,
             columns: updatedColumns,
           };
         });
-
         return {
           ...state,
           boards: updatedBoards,
@@ -507,9 +496,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
             state.activeBoard,
         };
       });
-
-      // API çağrısı
-      await taskService.updateTask(boardId, taskId, data);
     } catch (error) {
       // Hata durumunda original state'e dön
       set((state: BoardState) => ({
@@ -518,7 +504,6 @@ export const useBoardStore = create<BoardState>((set, get) => ({
         activeBoard: currentState.activeBoard,
         error: "Failed to update task",
       }));
-
       throw error;
     } finally {
       set({ loading: false });

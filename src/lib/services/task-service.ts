@@ -13,7 +13,7 @@ export const taskService = {
   createTask: async (
     boardId: string,
     columnId: string,
-    data: Partial<Task>
+    data: any
   ): Promise<Task> => {
     const response = await axios.post<ApiResponse<Task>>(
       `/api/boards/${boardId}/columns/${columnId}/tasks`,
@@ -39,7 +39,7 @@ export const taskService = {
   updateTask: async (
     boardId: string,
     taskId: string,
-    data: Partial<Task>
+    data: any
   ): Promise<Task> => {
     const response = await axios.put<ApiResponse<Task>>(
       `/api/boards/${boardId}/tasks/${taskId}`,
