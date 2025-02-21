@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { TaskPriority } from "@/lib/types/task";
 import { useBoardStore } from "@/store/board-store";
 import { useToast } from "@/hooks/use-toast";
+import { BoardMember } from "@/lib/types/board";
 
 import {
   Dialog,
@@ -86,7 +87,7 @@ export function CreateTaskModal({
     },
   });
 
-  const boardMembers = activeBoard?.members || [];
+  const boardMembers = activeBoard?.members || ([] as BoardMember[]);
 
   const onSubmit = async (values: TaskFormValues) => {
     try {
@@ -234,7 +235,7 @@ export function CreateTaskModal({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {boardMembers.map((member: any) => (
+                      {boardMembers.map((member: BoardMember) => (
                         <SelectItem
                           key={member._id}
                           value={member._id}
@@ -253,7 +254,7 @@ export function CreateTaskModal({
                   <div className="flex flex-wrap gap-2 mt-2">
                     {field.value.map((memberId) => {
                       const member = boardMembers.find(
-                        (m: any) => m._id === memberId
+                        (m: BoardMember) => m._id === memberId
                       );
                       return (
                         member && (

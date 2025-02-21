@@ -3,15 +3,17 @@ import { Task } from "./task";
 
 export type ColumnType = "todo" | "in-progress" | "done" | "custom";
 
+export interface BoardMember {
+  _id: string;
+  name: string;
+  email: string;
+}
+
 export interface SimpleBoard {
   _id: string;
   name: string;
   description?: string;
-  owner?: {
-    _id: string;
-    name: string;
-    email: string;
-  };
+  owner?: BoardMember;
 }
 
 export interface Column {
@@ -29,8 +31,8 @@ export interface Board {
   _id: string;
   name: string;
   description?: string;
-  owner: any; // User ID
-  members: string[]; // User IDs
+  owner: BoardMember;
+  members: BoardMember[]; // Updated from string[] to BoardMember[]
   columns: Column[];
 }
 
