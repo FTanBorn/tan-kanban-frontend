@@ -11,12 +11,13 @@ import { Notification, NotificationType } from "@/lib/types/notification";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { AnswerMemberModal } from "@/components/modals/answer-member-modal";
+import { ReactElement } from "react";
 
 interface NotificationItemProps {
   notification: Notification;
 }
 
-const NOTIFICATION_ICONS: Record<NotificationType, JSX.Element> = {
+const NOTIFICATION_ICONS: Record<NotificationType, ReactElement> = {
   BOARD_INVITATION: <div className="h-2 w-2 rounded-full bg-blue-500" />,
   BOARD_DELETED: <div className="h-2 w-2 rounded-full bg-red-500" />,
   MEMBER_ADDED: <div className="h-2 w-2 rounded-full bg-green-500" />,
