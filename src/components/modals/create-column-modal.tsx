@@ -7,7 +7,6 @@ import * as z from "zod";
 import { Loader2 } from "lucide-react";
 import { useBoardStore } from "@/store/board-store";
 import { useToast } from "@/hooks/use-toast";
-import { ColumnType } from "@/lib/types/column";
 
 import {
   Dialog,
