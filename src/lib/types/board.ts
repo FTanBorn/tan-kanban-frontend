@@ -1,12 +1,7 @@
 // src/lib/types/board.ts
 import { Task } from "./task";
 
-export enum ColumnType {
-  TODO = "todo",
-  IN_PROGRESS = "in-progress",
-  DONE = "done",
-  CUSTOM = "custom",
-}
+export type ColumnType = "todo" | "in-progress" | "done" | "custom";
 
 export interface SimpleBoard {
   _id: string;
@@ -53,8 +48,8 @@ export interface UpdateBoardInput {
 export interface CreateColumnInput {
   name: string;
   type: ColumnType;
-  color: string;
   limit?: number;
+  color?: string;
 }
 
 export interface UpdateColumnInput {

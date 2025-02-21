@@ -2,7 +2,7 @@
 import axios from "@/lib/utils/axios";
 import { Board, CreateBoardInput, SimpleBoard } from "@/lib/types/board";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/config/auth";
 
 export const boardService = {
   // Basit board listesini getir
