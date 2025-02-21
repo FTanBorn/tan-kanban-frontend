@@ -44,6 +44,8 @@ export function BoardColumn({
   const isOverLimit =
     hasTaskLimit && column.limit ? tasksCount >= column.limit : false;
 
+  console.log(activeTaskId);
+
   // Column için sürükle-bırak
   const {
     attributes,
