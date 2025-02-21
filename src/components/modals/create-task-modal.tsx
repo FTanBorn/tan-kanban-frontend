@@ -95,7 +95,7 @@ export function CreateTaskModal({
 
       await createTask(boardId, columnId, {
         ...values,
-        dueDate: values.dueDate ? new Date(values.dueDate) : undefined,
+        dueDate: values.dueDate || undefined,
       });
 
       toast({
