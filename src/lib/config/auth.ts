@@ -4,6 +4,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
+if (!BASE_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL is not defined");
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -20,20 +24,22 @@ export const authOptions: NextAuthOptions = {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              Accept: "application/json",
             },
             body: JSON.stringify({
               email: credentials.email,
               password: credentials.password,
             }),
+            // CORS sorununu çözmek için
+            credentials: "include",
           });
 
-          const data = await response.json();
-
           if (!response.ok) {
-            console.error("Login error:", data);
-            return null;
+            const error = await response.json();
+            throw new Error(error.message || "Login failed");
           }
 
+          const data = await response.json();
           return {
             id: data._id,
             name: data.name,
@@ -42,7 +48,7 @@ export const authOptions: NextAuthOptions = {
           };
         } catch (error) {
           console.error("Login error:", error);
-          return null;
+          throw error; // Hatayı UI'a yansıtmak için throw ediyoruz
         }
       },
     }),
@@ -75,5 +81,6 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
+  secret: process.env.NEXTAUTH_SECRET,
   debug: process.env.NODE_ENV === "development",
 };
