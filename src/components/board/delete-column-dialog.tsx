@@ -10,20 +10,21 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useBoardStore } from "@/store/board-store";
+import { Column } from "@/lib/types/board";
 
 interface DeleteColumnDialogProps {
-  columnId: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
+  column: Column;
+  children: React.ReactNode;
 }
 
 export function DeleteColumnDialog({
-  columnId,
-  open,
-  onOpenChange,
+  column,
+  children,
 }: DeleteColumnDialogProps) {
+  const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { deleteColumn, activeBoard } = useBoardStore();
   const { toast } = useToast();
@@ -31,9 +32,9 @@ export function DeleteColumnDialog({
   const handleDelete = async () => {
     try {
       setIsLoading(true);
-      await deleteColumn(activeBoard?._id || "", columnId);
+      await deleteColumn(activeBoard?._id || "", column._id);
       toast({ title: "Success", description: "Column deleted successfully" });
-      onOpenChange(false);
+      setOpen(false);
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -46,11 +47,15 @@ export function DeleteColumnDialog({
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Column</AlertDialogTitle>
-          <AlertDialogDescription>Are you sure?</AlertDialogDescription>
+          <AlertDialogDescription>
+            Are you sure you want to delete the column "{column.name}"? This
+            action cannot be undone.
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>

@@ -1,6 +1,6 @@
-// src/components/board/column-header.tsx
 "use client";
 
+import { useState } from "react";
 import { Column } from "@/lib/types/board";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 
@@ -21,6 +21,7 @@ interface ColumnHeaderProps {
 }
 
 export function ColumnHeader({ column }: ColumnHeaderProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const tasksCount = 0; // TODO: Tasks functionality will be added later
   const hasTaskLimit = typeof column.limit === "number";
   const isOverLimit =
@@ -40,19 +41,22 @@ export function ColumnHeader({ column }: ColumnHeaderProps) {
         )}
       </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="h-8 w-8">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-          <EditColumnModal column={column}>
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Column
-            </DropdownMenuItem>
-          </EditColumnModal>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="h-8 w-8">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            onSelect={(e) => {
+              e.preventDefault();
+              setIsEditModalOpen(true);
+            }}
+          >
+            <Pencil className="h-4 w-4 mr-2" />
+            Edit Column
+          </DropdownMenuItem>
 
           <DeleteColumnDialog column={column}>
             <DropdownMenuItem
@@ -63,8 +67,14 @@ export function ColumnHeader({ column }: ColumnHeaderProps) {
               Delete Column
             </DropdownMenuItem>
           </DeleteColumnDialog>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <EditColumnModal
+        column={column}
+        open={isEditModalOpen}
+        onOpenChange={setIsEditModalOpen}
+      />
     </div>
   );
 }
