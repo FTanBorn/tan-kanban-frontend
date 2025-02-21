@@ -37,16 +37,12 @@ export function BoardColumn({
 }: BoardColumnProps) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isUpdateColumnModalOpen, setIsUpdateColumnModalOpen] = useState(false);
-  const [isDeleteColumnDialogOpen, setIsDeleteColumnDialogOpen] =
-    useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const tasksCount = 0;
   const hasTaskLimit = typeof column.limit === "number";
   const isOverLimit =
     hasTaskLimit && column.limit ? tasksCount >= column.limit : false;
-
-  console.log(activeTaskId);
 
   // Column için sürükle-bırak
   const {
@@ -152,16 +148,15 @@ export function BoardColumn({
                   Edit Column
                 </DropdownMenuItem>
 
-                <DropdownMenuItem
-                  onClick={() => {
-                    setIsDeleteColumnDialogOpen(true);
-                    setIsDropdownOpen(false);
-                  }}
-                  className="text-red-600 focus:text-red-600"
-                >
-                  <Trash className="h-4 w-4 mr-2" />
-                  Delete Column
-                </DropdownMenuItem>
+                <DeleteColumnDialog column={column}>
+                  <DropdownMenuItem
+                    onClick={() => setIsDropdownOpen(false)}
+                    className="text-red-600 focus:text-red-600"
+                  >
+                    <Trash className="h-4 w-4 mr-2" />
+                    Delete Column
+                  </DropdownMenuItem>
+                </DeleteColumnDialog>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -198,11 +193,6 @@ export function BoardColumn({
         column={column}
         open={isUpdateColumnModalOpen}
         onOpenChange={setIsUpdateColumnModalOpen}
-      />
-      <DeleteColumnDialog
-        open={isDeleteColumnDialogOpen}
-        onOpenChange={setIsDeleteColumnDialogOpen}
-        columnId={column._id}
       />
       <CreateTaskModal
         boardId={boardId}
