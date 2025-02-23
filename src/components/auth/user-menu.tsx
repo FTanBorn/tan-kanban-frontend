@@ -56,12 +56,6 @@ export function UserMenu() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="flex items-center" asChild>
-          <Link href="/profile">
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuItem
           className="flex items-center text-red-600 focus:text-red-600"
           onClick={handleSignOut}
