@@ -23,11 +23,11 @@ const HeroSection = () => {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col justify-center space-y-4 transition-all duration-200 ease-in-out">
             <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
-              Your Tasks, Your Way with Our Kanban Board
+              Your Tasks, Your Way with Our Tan Kanban Board
             </h1>
             <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
               Streamline your workflow, enhance team collaboration, and boost
-              productivity with our intuitive Kanban board solution.
+              productivity with our intuitive Tan Kanban board solution.
             </p>
             <div className="flex flex-col gap-2 min-[400px]:flex-row">
               {session ? (
@@ -239,7 +239,7 @@ const CTASection = () => {
             Ready to Get Started?
           </h2>
           <p className="mx-auto max-w-[600px] text-primary-foreground/90 md:text-xl/relaxed">
-            Join thousands of teams already using our Kanban board to improve
+            Join thousands of teams already using our Tan Kanban board to improve
             their workflow.
           </p>
           <div className="flex flex-col gap-2 min-[400px]:flex-row">

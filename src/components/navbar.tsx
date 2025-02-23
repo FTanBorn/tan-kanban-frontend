@@ -6,7 +6,7 @@ export function Navbar() {
     <nav className="border-b bg-background">
       <div className="flex h-16 items-center px-4 container mx-auto">
         <Link href="/">
-          <h1 className="text-xl font-bold">Kanban Board</h1>
+          <h1 className="text-xl font-bold">Tan Kanban Board</h1>
         </Link>
         <NavbarRight />
       </div>

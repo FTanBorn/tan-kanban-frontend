@@ -36,7 +36,7 @@ export default function LoginPage() {
       <div className="hidden lg:flex lg:flex-1 bg-primary">
         <div className="flex flex-col justify-between p-12 w-full text-primary-foreground">
           <div>
-            <h1 className="text-4xl font-bold mb-4">Welcome to Kanban Board</h1>
+            <h1 className="text-4xl font-bold mb-4">Welcome to Tam Kanban Board</h1>
             <p className="text-lg opacity-90">Your projects, your way.</p>
           </div>
 

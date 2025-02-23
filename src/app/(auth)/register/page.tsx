@@ -11,7 +11,7 @@ export default function RegisterPage() {
           {/* Logo ve Başlık */}
           <div>
             <h1 className="text-4xl font-bold text-primary mb-4">
-              Welcome to Kanban Board
+              Welcome to Tan Kanban Board
             </h1>
             <p className="text-lg text-muted-foreground">
               Organize, track, and manage your projects with ease.
