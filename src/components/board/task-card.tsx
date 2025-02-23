@@ -79,6 +79,16 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
     transition,
   };
 
+  const getInitials = (name?: string) => {
+    if (!name) return "?";
+
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
+
   return (
     <>
       <div
@@ -115,19 +125,15 @@ export function TaskCard({ task, columnId }: TaskCardProps) {
         </div>
 
         {/* Main Assignee */}
-        {task.assignees[0] && (
+        {task.assignees?.[0] && (
           <div className="flex items-center gap-2">
             <Avatar className="h-6 w-6">
               <AvatarFallback className="text-xs">
-                {task.assignees[0].name
-                  .split(" ")
-                  .map((n: string) => n[0])
-                  .join("")
-                  .toUpperCase()}
+                {getInitials(task.assignees[0]?.name)}
               </AvatarFallback>
             </Avatar>
             <span className="text-xs text-muted-foreground truncate">
-              {task.assignees[0].name}
+              {task.assignees[0]?.name || "Unnamed User"}
             </span>
           </div>
         )}

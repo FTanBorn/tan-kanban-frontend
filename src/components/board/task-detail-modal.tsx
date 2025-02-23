@@ -40,6 +40,15 @@ interface TaskDetailModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+const getInitials = (name?: string) => {
+  if (!name) return "?";
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase();
+};
+
 // EditableField componenti
 interface EditableFieldProps {
   value: string;
@@ -216,26 +225,21 @@ export function TaskDetailModal({
             </div>
 
             {/* Assignees */}
-            {task.assignees?.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {task.assignees.map((assignee) => (
-                  <div
-                    key={assignee._id}
-                    className="flex items-center gap-2 bg-secondary p-1 pl-1 pr-3 rounded-full"
-                  >
-                    <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-xs">
-                        {assignee.name
-                          .split(" ")
-                          .map((n: string) => n[0])
-                          .join("")}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-xs">{assignee.name}</span>
-                  </div>
-                ))}
+            {task.assignees?.map((assignee) => (
+              <div
+                key={assignee._id}
+                className="flex items-center gap-2 bg-secondary p-1 pl-1 pr-3 rounded-full"
+              >
+                <Avatar className="h-6 w-6">
+                  <AvatarFallback className="text-xs">
+                    {getInitials(assignee?.name)}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="text-xs">
+                  {assignee?.name || "Unnamed User"}
+                </span>
               </div>
-            )}
+            ))}
           </div>
         </ScrollArea>
       </DialogContent>
