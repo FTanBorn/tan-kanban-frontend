@@ -15,11 +15,7 @@ interface ColumnListProps {
   activeTaskId: string | null;
 }
 
-export function ColumnList({
-  boardId,
-  columns,
-  activeTaskId,
-}: ColumnListProps) {
+export function ColumnList({ boardId, columns }: ColumnListProps) {
   const columnIds = columns
     .filter((col) => col._id)
     .map((col) => col._id) as string[];
@@ -31,12 +27,7 @@ export function ColumnList({
         strategy={horizontalListSortingStrategy}
       >
         {columns.map((column) => (
-          <BoardColumn
-            key={column._id}
-            boardId={boardId}
-            column={column}
-            activeTaskId={activeTaskId}
-          />
+          <BoardColumn key={column._id} boardId={boardId} column={column} />
         ))}
       </SortableContext>
 

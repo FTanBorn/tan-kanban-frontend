@@ -23,30 +23,23 @@ import {
 } from "../ui/dropdown-menu";
 import { EditColumnModal } from "./edit-column-modal";
 import { DeleteColumnDialog } from "./delete-column-dialog";
+import { CustomScrollbar } from "../perfect-scrollbar";
 
 interface BoardColumnProps {
   boardId: string;
   column: Column;
-  activeTaskId: string | null;
 }
 
-export function BoardColumn({
-  boardId,
-  column,
-  activeTaskId,
-}: BoardColumnProps) {
+export function BoardColumn({ boardId, column }: BoardColumnProps) {
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [isUpdateColumnModalOpen, setIsUpdateColumnModalOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const tasksCount = 0;
+  const tasksCount = column.tasks.length;
   const hasTaskLimit = typeof column.limit === "number";
   const isOverLimit =
     hasTaskLimit && column.limit ? tasksCount >= column.limit : false;
 
-  console.log(activeTaskId);
-
-  // Column için sürükle-bırak
   const {
     attributes,
     listeners,
@@ -168,25 +161,35 @@ export function BoardColumn({
         <div
           ref={setDropRef}
           className={cn(
-            "flex-1 p-2 flex flex-col gap-2 overflow-y-auto",
-            "scrollbar-thin scrollbar-thumb-primary/10 hover:scrollbar-thumb-primary/20",
+            "flex-1",
             isColumnOver && !isColumnDragging && "bg-muted/30"
           )}
         >
-          <SortableContext
-            items={sortedTasks.map((task) => task._id)}
-            strategy={verticalListSortingStrategy}
+          <CustomScrollbar
+            className="h-full"
+            options={{
+              suppressScrollX: true,
+              wheelPropagation: true,
+              minScrollbarLength: 40,
+            }}
           >
-            {sortedTasks.map((task) => (
-              <TaskCard key={task._id} task={task} columnId={column._id} />
-            ))}
-          </SortableContext>
+            <div className="p-2 flex flex-col gap-2">
+              <SortableContext
+                items={sortedTasks.map((task) => task._id)}
+                strategy={verticalListSortingStrategy}
+              >
+                {sortedTasks.map((task) => (
+                  <TaskCard key={task._id} task={task} columnId={column._id} />
+                ))}
+              </SortableContext>
 
-          {column.tasks.length === 0 && (
-            <div className="h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
-              <span className="text-sm py-8">Drop tasks here</span>
+              {column.tasks.length === 0 && (
+                <div className="h-full flex flex-col items-center justify-center gap-2 text-muted-foreground">
+                  <span className="text-sm py-8">Drop tasks here</span>
+                </div>
+              )}
             </div>
-          )}
+          </CustomScrollbar>
         </div>
       </div>
 
